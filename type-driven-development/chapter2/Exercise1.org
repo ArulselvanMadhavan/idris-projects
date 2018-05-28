@@ -1,4 +1,9 @@
 #+BEGIN_SRC idris :exports both
-  :let x = ("A", "B", "C")
-  :t x
+λΠ> :t ("A", "B", "C")
+("A", "B", "C") : (String, String, String)
+λΠ> :t ["A", "B", "C"]
+["A", "B", "C"] : List String
+λΠ> :t (('A',"B"), 'C')
+(('A', "B"), 'C') : ((Char, String), Char)
+λΠ> 
 #+END_SRC
