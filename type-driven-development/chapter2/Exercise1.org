@@ -1,0 +1,4 @@
+#+BEGIN_SRC idris :exports both
+  :let x = ("A", "B", "C")
+  :t x
+#+END_SRC
