@@ -1,5 +1,7 @@
-module Main
+module Average
 
+||| Calculate the average length of words in a string
+export
 average : (str : String) -> Double
 average str =
   let numWords = wordCount str
@@ -11,10 +13,3 @@ average str =
 
     allLengths : List String -> List Nat
     allLengths strs = map length strs
-
-showAverage : String -> String
-showAverage str = "The average word length is: " ++
-                  show (average str) ++ "\n"
-
-main : IO ()
-main = repl "Enter a string: " showAverage
