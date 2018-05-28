@@ -1,3 +1,5 @@
 * Idris
 ** Installation Instructions
    [[https://github.com/idris-lang/Idris-dev/wiki/Installation-Instructions][Idris Installation Instructions]]
+** Links to my notes from chapters
+   [[file:type-driven-development/chapter1/README.org][Chapter1 Notes]]
