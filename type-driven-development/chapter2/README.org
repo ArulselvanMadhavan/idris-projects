@@ -1,0 +1,16 @@
+ 
+* Chapter 2 - Getting started with Idris
+
+** Difference between Idris and Haskell
+   - Idris is not lazily evaluated
+   - String is a primitive type, unlike haskell in which String is a list of characters.
+   - Idris has a function called ~repl~ that repeatedly displays a prompt, 
+     reads a String from console and displays result of running a function on that string.
+** Types
+   - ~Int~ - Fixed width signed integer type
+   - ~Integer~ - Unbounded signed integer type
+   - ~Nat~ - Unbounded unsigned integer type
+   - ~Double~ - Double precision floating point type
+** Type conversions
+   - ~the~ expressions are ordinary functions that takes advantage of first-class types.
+   - ~cast~ converts from one type to another
