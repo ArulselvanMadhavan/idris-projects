@@ -1,0 +1,7 @@
+* Idris Overview
+  - Idris is a purely functional programming language with first class dependent types.
+  - Type Driven Development is an iterative process of type, define, refine, creating a type to model a system,
+    then defining functions, and finally refining the types as necessary.
+  - In TDD, type is viewed as a plan, helping an interactive environment guide the programmer to a working program.
+  - Dependent types allow you to give more precise types to programs and hence more informative plans to the machine.
+  - A total function is guaranteed to produce a result for any well-typed input in finite time.
