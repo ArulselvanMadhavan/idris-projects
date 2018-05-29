@@ -1,0 +1,19 @@
+* Interactive development with types
+*** Type Driven Development
+    1. Type - Either write a type to begin the process, or inspect the
+       type of a hole to decide how to continue the process
+    2. Define - Create the structure of a function definition either by
+       creating an outline of a definition or breaking it down into
+       smaller components
+    3. Refine - Improve an exiting definition either by filling in a
+       hole or making its type more precise.
+
+*** Interactive development features
+    - ~Add definitions~ - Add skeleton definition based on type definition.
+    - ~Case analysis~ - Given a skeleton function defintion with
+      arguments, Idris can use the types of those arguments to help
+      define the function by pattern matching.
+    - ~Expression search~ - Given a hole with a precise enough type,
+      Idris can try to find an expression that satisfies the hole's
+      type, refining the definition.
+
