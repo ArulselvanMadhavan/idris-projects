@@ -17,3 +17,27 @@
       Idris can try to find an expression that satisfies the hole's
       type, refining the definition.
 
+*** Totality checking
+    - Idris considers a function as total, if
+      - It has clauses that cover all possible well-typed inputs
+      - All recursive calls converge on a base case
+    - ~total~ annotation before function declaration indicates to
+      idris that you intend to write a total function.
+
+*** Mutually defined functions
+    Idris processes input files from top to bottom and requires types and functions to be
+    defined before use. This is necessary due to complications that arise with dependent
+    types, where the definition of a function can affect a type.
+    It’s nevertheless sometimes useful to define two or more functions in terms of each
+    other. This can be achieved in a mutual block. For example, you could define isEven
+    in terms of an isOdd function, and vice versa:
+    #+BEGIN_SRC idris
+    mutual
+      isEven : Nat -> Bool
+      isEven Z = True
+      isEven (S k) = isOdd k
+
+      isOdd : Nat -> Bool
+      isOdd Z = False
+      isOdd (S k) = isEven k
+    #+END_SRC
