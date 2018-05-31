@@ -4,3 +4,4 @@
 ** Links to notes from chapters
    - [[file:chapter1/README.org][Chapter 1]]
    - [[file:chapter2/README.org][Chapter 2]]
+   - [[file:chapter3/README.org][Chapter 3]]

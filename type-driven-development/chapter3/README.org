@@ -41,3 +41,26 @@
       isOdd Z = False
       isOdd (S k) = isEven k
     #+END_SRC
+
+*** Implicit arguments: type-level variables
+    - ~_~ indicates that there is only one possible value/type and you
+      want Idris to infer it for your.
+
+**** Bounded Implicits vs Unbounded Implicits
+     - Two reasons why you may want to give explicit types to implicit arguments
+       - For clarity and readability
+       - If there's a dependency between an implicit argument and some
+         other argument, you may need to use bound implicit to make
+         the dependency clear to Idris
+     - Example
+       #+BEGIN_SRC idris
+       append : {elem : Type} -> {n : Nat} -> {m : Nat} -> Vect n elem -> Vect m elem -> Vect (n + m) elem
+       #+END_SRC
+     - ~{n}~ brings the implicit argument ~n~ into scope.
+     - ~{n = value}~ - to give explicit values to implicit arguments.
+     - Example
+       #+BEGIN_SRC idris
+       createEmpties : Vect n (Vect 0 a)
+       createEmpties {n = Z} = []
+       createEmpties {n = (S k)} = [] :: createEmpties
+       #+END_SRC
