@@ -1,0 +1,9 @@
+* User Defined Data types
+** Classifications
+   - Enumerated types - Types defined by giving the possible values directly.
+   - Union types - Enum types that carry additional data with each value
+   - Recursive types - Union types that are defined in terms of themselves
+   - Generic types - Types that are parameterized over some other types
+   - Dependent types - Types that are computed from some other value
+** Notes   
+   - ~%name~ - to make Idris use custom names when generating cases

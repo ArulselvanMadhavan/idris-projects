@@ -7,5 +7,5 @@ createEmpties = replicate _ []
 
 tranpose' : Vect n (Vect m a) -> Vect m (Vect n a)
 tranpose' [] = createEmpties
-tranpose' (x :: xs) = let xstrans = transpose xs in
-                     zipWith (::) x xstrans
+tranpose' (x :: xs) = let xstrans = tranpose' xs in
+                      zipWith (::) x xstrans
