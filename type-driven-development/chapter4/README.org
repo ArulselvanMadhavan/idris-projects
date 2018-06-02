@@ -7,3 +7,14 @@
    - Dependent types - Types that are computed from some other value
 ** Notes   
    - ~%name~ - to make Idris use custom names when generating cases
+** Dependent data types
+   - Dependent data type is a type that's computed from some other value.
+   - Types can be computed from expressions.
+   - DT allow you to give more precise information about the data
+     constructors of a type, by adding more arguments to the type
+     constructor.
+** Parameters and Indices
+   - ~Vect~ is indexed by its length and parameterized by an element
+     type.
+   - A ~parameter~ is unchanged across the entire structure.
+   - An ~index~ may change across a structure.
