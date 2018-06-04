@@ -1,8 +1,6 @@
 module Main
 
 import System
-import Effects
-import Effect.Random
 
 readNumber : IO (Maybe Nat)
 readNumber = do
@@ -16,34 +14,35 @@ mutual
   message msg = do
     putStrLn msg
 
-  checkGuess : Nat -> Nat -> IO ()
-  checkGuess target x =
+  checkGuess : Nat -> Nat -> Nat -> IO ()
+  checkGuess guesses target x =
     case compare x target of
          LT => do
                message "Guess higher!"
-               guess target
+               guess target guesses
          EQ => do
                message "Bingo! You got it!"
          GT => do
                message "Guess lower!"
-               guess target
+               guess target guesses
 
 
-  guess : (target : Nat) -> IO ()
-  guess target = do
+  guess : (target : Nat) -> (guesses : Nat) ->IO ()
+  guess target guesses = do
+    putStrLn $ "Total guesses so far: " ++ (show guesses)
     putStr "Enter your guess: "
     num <- readNumber
     case num of
          Nothing  => do
                      message "Invalid Input. Try again."
-                     guess target
-         (Just x) => checkGuess target x
+                     guess target (S guesses)
+         (Just x) => checkGuess (S guesses) target x
 
 
 main : IO ()
 main = do
   t <- time
-  guess (fromInteger (t `mod` 100))
+  guess (fromInteger (t `mod` 100)) 0
 
 
 
