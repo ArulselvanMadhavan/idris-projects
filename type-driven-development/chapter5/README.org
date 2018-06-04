@@ -8,3 +8,22 @@
      user input to terminate) are not total
    - Total programs must either terminate or be guaranteed to produce
      a finite prefix of some infinite input, within finite time.
+** Reading and validating dependent types
+   - If you want to read a dependent type value from user(runtime),
+     then we can't have that information in the type constructor.
+   - We can write a wrapper type like this
+     #+BEGIN_SRC idris
+     data VectUnknown : Type -> Type where
+          MkVect : (len : Nat) -> Vect len a -> VectUnknown a
+     #+END_SRC
+   - Instead of having to write a wrapper type, Idris provides a more
+     generic solution ~Dependent pairs~.
+** Dependent Pairs
+   - ~Dependent Pair~ is a more expressive form of the tuple
+     construct, where the type of the second element in a pair can be
+     computed from the first element.
+     #+BEGIN_SRC idris
+     anyVect : (n : Nat ** Vect n String)
+     anyVect = (3 ** ["Arul", "selvan", "today"]
+     #+END_SRC
+   - 
