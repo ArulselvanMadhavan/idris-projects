@@ -1,0 +1,10 @@
+* Interactive Programs: Input and Output Processing
+** Totality and interactive programs
+   - Totality checking is based on evaluation, not execution.
+   - Result of totality checking an IO program, tells you whether
+     Idris will produce a finite sequence of actions, but nothing
+     about the runtime behavior of those actions.
+   - Interactive programs that loop forever(expecting some kind of
+     user input to terminate) are not total
+   - Total programs must either terminate or be guaranteed to produce
+     a finite prefix of some infinite input, within finite time.
