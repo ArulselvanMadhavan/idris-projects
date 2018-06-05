@@ -1,0 +1,13 @@
+* Programming with first-class types
+** Type-level functions
+   - Type Synonyms - To give more meaningful names names to composite types.
+   - To allow a function's type to vary according to some contextual information.
+   - Functions intended to compute types, start with a capital letter.
+   - Type-level functions
+     - Only exist at compile time. There's no runtime representation
+       of ~Type~. There's no runtime representation of Type, and no
+       way to inspect a Type directly.
+     - Only ~total~ functions are evaluated at the type level. Why? A
+       function that is not total may not cover all possible inputs and
+       may not terminate.
+     - Functions that are not total are treated as constants at the type-level.
