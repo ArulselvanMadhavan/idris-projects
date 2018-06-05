@@ -26,4 +26,7 @@
      anyVect : (n : Nat ** Vect n String)
      anyVect = (3 ** ["Arul", "selvan", "today"]
      #+END_SRC
-   - 
+   - DP allow you to pair two values, where the type of the second
+     value is computed from the first value.
+   - You can use DP to express that a type's argument, such as the
+     length of a vector, will not be known until the user enters some input.

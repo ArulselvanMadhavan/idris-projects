@@ -6,3 +6,4 @@
    - [[file:chapter2/README.org][Chapter 2]]
    - [[file:chapter3/README.org][Chapter 3]]
    - [[file:chapter4/README.org][Chapter 4]]
+   - [[file:chapter5/README.org][Chapter 5]]
