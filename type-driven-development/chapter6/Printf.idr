@@ -3,6 +3,8 @@ module Printf
 data Format = Number Format
             | Str Format
             | Lit String Format
+            | Char' Format
+            | Double' Format
             | End
 
 ||| A type level function used to construct the argument chain based
@@ -15,6 +17,8 @@ PrintfType (Str fmt) = (s: String) -> PrintfType fmt -- A String input
                                    -- is expected from user. Capture
                                    -- it in the type
 PrintfType (Lit x fmt) = PrintfType fmt -- No inputs expected from user
+PrintfType (Char' fmt) = (c: Char) -> PrintfType fmt
+PrintfType (Double' fmt) = (d: Double) -> PrintfType fmt
 PrintfType End = String -- Return type of printf is always a String
 
 ||| Takes a format and an accumulator string to generate the final
@@ -23,6 +27,8 @@ printfFmt : (fmt : Format) -> (acc : String) -> PrintfType fmt
 printfFmt (Number x) acc = \i => printfFmt x (acc ++ show i)
 printfFmt (Str x) acc = \s => printfFmt x (acc ++ s)
 printfFmt (Lit x y) acc = printfFmt y (acc ++ x)
+printfFmt (Char' x) acc = \c => printfFmt x (acc ++ singleton c)
+printfFmt (Double' x) acc = \d => printfFmt x (acc ++ show d)
 printfFmt End acc = acc
 
 ||| toFormat function takes a list of characters and returns Format
@@ -30,6 +36,8 @@ toFormat : (xs : List Char) -> Format
 toFormat [] = End
 toFormat ('%' :: 'd' :: chars) = Number (toFormat chars)
 toFormat ('%' :: 's' :: chars) = Str (toFormat chars)
+toFormat ('%' :: 'c' :: chars) = Char' (toFormat chars)
+toFormat ('%' :: 'f' :: chars) = Double' (toFormat chars)
 toFormat ('%' :: chars) = Lit "%" (toFormat chars) -- Not sure why
                                   -- this has to be a separate case.
 toFormat (c :: chars) = case toFormat chars of
