@@ -21,8 +21,8 @@ data DataStore : Type where
 data Command : Schema -> Type where
   Add  : SchemaType schema -> Command schema
   Get  : Integer -> Command schema
+  SetSchema : (newSchema : Schema) -> Command schema
   Size : Command schema
-  Search : SchemaType schema -> Command schema
   Quit : Command schema
 
 schema : DataStore -> Schema
@@ -67,12 +67,18 @@ parseBySchema : (schema : Schema) -> (arg : String) -> Maybe (SchemaType schema)
 parseBySchema schema arg = do (rem, result) <- parsePrefix schema arg
                               if rem == "" then pure result else Nothing
 
+parseSchema : (xs: List String) -> Maybe Schema
+parseSchema [] = Nothing
+parseSchema ("String" :: xs) = ((.+.) SString) <$> parseSchema xs
+parseSchema ("Int" :: xs) = ((.+.) SInt) <$> parseSchema xs
+parseSchema _ = Nothing
+
 parseCommand : (schema : Schema) -> (cmd : String) -> (arg : String) -> Maybe (Command schema)
 parseCommand schema "add" arg = Add <$> parseBySchema schema arg
 parseCommand schema "get" arg = case all isDigit (unpack arg) of
                                      False => Nothing
                                      True  => Just $ Get (cast arg)
-parseCommand schema "search" arg = Search <$> (parseBySchema schema arg)
+parseCommand schema "schema" arg = SetSchema <$> (parseSchema (words arg))
 parseCommand schema "size" _  = Just Size
 parseCommand schema "quit" _  = Just Quit
 parseCommand schema _ _ = Nothing
@@ -92,28 +98,11 @@ getEntry x store = case integerToFin x (size store) of
                         Nothing => ("Out of Range\n", store)
                         (Just i) => (display (index i $ items store) ++ "\n", store)
 
--- -- I could make the result type of this function to be a string but I
--- -- worked hard to get the current return type working. I am going to
--- -- leave it as an example for future reference.
--- getSearchResults : (items : Vect n String) -> (searchTerm : String) -> (p ** Vect p (Nat, String))
--- getSearchResults {n = Z} [] searchTerm = (_ ** [])
--- getSearchResults {n = (S len)} (x :: xs) searchTerm =
---   let (_ ** tail) = getSearchResults xs searchTerm
---   in
---   if Strings.isInfixOf searchTerm x then
---   (_ ** ((len, x)) :: tail)
---   else (_ ** tail)
-
--- printResults : (p : Nat ** Vect p (Nat, String)) -> String
--- printResults (_ ** []) = ""
--- printResults (_ ** ((a, b) :: xs)) = show a ++ "\t" ++ show b ++ "\n" ++ (printResults (_ ** xs))
-
 processInput : DataStore -> String -> Maybe (String, DataStore)
 processInput store input = case  parse (schema store) input of
                              Nothing => Just ("Invalid command\n", store)
                              Just (Add x) => Just $ ("ID " ++ show (size store) ++ "\n", addToStore store x)
                              Just (Get x) => Just $ (getEntry x store)
-                             -- Just (Search x) => Just $ (printResults $ getSearchResults (items store) x, store)
                              Just Size => Just $ ("Size is:" ++ show (size store) ++ "\n", store)
                              Just Quit => Nothing
 
