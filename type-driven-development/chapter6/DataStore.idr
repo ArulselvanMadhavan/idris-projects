@@ -42,12 +42,37 @@ addToStore : (store: DataStore) -> (SchemaType (schema store)) -> DataStore
 addToStore (MkData schema Z items) y = MkData schema _ (y :: items)
 addToStore (MkData schema (S k) (x :: xs)) y = MkData schema _ (x :: (newItems schema xs y))
 
+extractText : (xs : List Char) -> Maybe (String, List Char)
+extractText [] = Nothing -- No closing quote found
+extractText ('"' :: xs) = Just (ltrim . pack $ xs, [])
+extractText (x :: xs) = (map . map) ((::) x) (extractText xs)
+
+parseString : (arg : List Char) -> Maybe (String, String)
+parseString ('"' :: xs) = (map . map) pack (extractText xs)
+parseString _ = Nothing
+
+parseInt : (arg : String) -> Maybe (String, Int)
+parseInt arg = case span isDigit arg of
+                    ("", b) => Nothing
+                    (a, b)  => Just (ltrim b, (cast a))
+
+parsePrefix : (schema : Schema) -> (arg : String) -> Maybe (String, SchemaType schema)
+parsePrefix SString arg = parseString (unpack arg)
+parsePrefix SInt arg = parseInt arg
+parsePrefix (x .+. y) arg = do (rem1, schema1) <- parsePrefix x arg
+                               (rem2, schema2) <- parsePrefix y rem1
+                               pure (rem2, (schema1, schema2))
+
+parseBySchema : (schema : Schema) -> (arg : String) -> Maybe (SchemaType schema)
+parseBySchema schema arg = do (rem, result) <- parsePrefix schema arg
+                              if rem == "" then pure result else Nothing
+
 parseCommand : (schema : Schema) -> (cmd : String) -> (arg : String) -> Maybe (Command schema)
-parseCommand schema "add" arg = Just $ Add (?parseBySchema arg)
+parseCommand schema "add" arg = Add <$> parseBySchema schema arg
 parseCommand schema "get" arg = case all isDigit (unpack arg) of
                                      False => Nothing
                                      True  => Just $ Get (cast arg)
-parseCommand schema "search" arg = Just $ Search (?parseBySchema arg)
+parseCommand schema "search" arg = Search <$> (parseBySchema schema arg)
 parseCommand schema "size" _  = Just Size
 parseCommand schema "quit" _  = Just Quit
 parseCommand schema _ _ = Nothing
