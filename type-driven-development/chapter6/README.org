@@ -11,3 +11,16 @@
        function that is not total may not cover all possible inputs and
        may not terminate.
      - Functions that are not total are treated as constants at the type-level.
+** Record Syntax
+   - Using record syntax allows you to access fields without having to
+     create projection functions.
+     #+BEGIN_SRC idris
+     record DataStore where
+            constructor MkData
+            schema : Schema
+            size   : Nat
+            items  : Vect size (SchemaType schema)
+     #+END_SRC
+   - There can be only one constructor.
+   - Use ~:doc~ to see the datatypes and the projection functions
+     created by Idris for the record type.
