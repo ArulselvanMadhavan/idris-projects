@@ -1,6 +1,7 @@
 module Main
 
 import Data.Vect
+import Debug.Trace
 
 infixr 5 .+.
 
@@ -54,11 +55,11 @@ parseString _ = Nothing
 parseInt : (arg : String) -> Maybe (String, Int)
 parseInt arg = case span isDigit arg of
                     ("", b) => Nothing
-                    (a, b)  => Just (ltrim b, (cast a))
+                    (a, b)  => Just (b, (cast a))
 
 parsePrefix : (schema : Schema) -> (arg : String) -> Maybe (String, SchemaType schema)
-parsePrefix SString arg = parseString (unpack arg)
-parsePrefix SInt arg = parseInt arg
+parsePrefix SString arg = parseString (unpack $ltrim arg)
+parsePrefix SInt arg = parseInt (ltrim arg)
 parsePrefix (x .+. y) arg = do (rem1, schema1) <- parsePrefix x arg
                                (rem2, schema2) <- parsePrefix y rem1
                                pure (rem2, (schema1, schema2))
@@ -68,14 +69,15 @@ parseBySchema schema arg = do (rem, result) <- parsePrefix schema arg
                               if rem == "" then pure result else Nothing
 
 parseSchema : (xs: List String) -> Maybe Schema
-parseSchema [] = Nothing
+parseSchema ("String" :: []) = Just SString
 parseSchema ("String" :: xs) = ((.+.) SString) <$> parseSchema xs
+parseSchema ("Int" :: []) = Just SInt
 parseSchema ("Int" :: xs) = ((.+.) SInt) <$> parseSchema xs
 parseSchema _ = Nothing
 
 parseCommand : (schema : Schema) -> (cmd : String) -> (arg : String) -> Maybe (Command schema)
 parseCommand schema "add" arg = Add <$> parseBySchema schema arg
-parseCommand schema "get" arg = case all isDigit (unpack arg) of
+parseCommand schema "get" arg = case all isDigit (unpack $ ltrim arg) of
                                      False => Nothing
                                      True  => Just $ Get (cast arg)
 parseCommand schema "schema" arg = SetSchema <$> (parseSchema (words arg))
@@ -98,12 +100,20 @@ getEntry x store = case integerToFin x (size store) of
                         Nothing => ("Out of Range\n", store)
                         (Just i) => (display (index i $ items store) ++ "\n", store)
 
+setSchema : (schema : Schema) -> (store : DataStore) -> Maybe (String, DataStore)
+setSchema schema store = if size store == 0
+                         then Just ("Store updated with new schema\n", MkData schema _ [])
+                         else Nothing
+
 processInput : DataStore -> String -> Maybe (String, DataStore)
-processInput store input = case  parse (schema store) input of
+processInput store input = case parse (schema store) input of
                              Nothing => Just ("Invalid command\n", store)
                              Just (Add x) => Just $ ("ID " ++ show (size store) ++ "\n", addToStore store x)
                              Just (Get x) => Just $ (getEntry x store)
                              Just Size => Just $ ("Size is:" ++ show (size store) ++ "\n", store)
+                             Just (SetSchema schema) => case (setSchema schema store) of
+                               Nothing => Just ("Unable to set schema.\n Store already has data.\n", store)
+                               (Just x) => Just x
                              Just Quit => Nothing
 
 main : IO ()
