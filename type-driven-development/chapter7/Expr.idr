@@ -28,3 +28,10 @@ Show ty => Show (Expr ty) where
   show (Mul x y) = "(" ++ show x ++ " * " ++ show y ++ ")"
   show (Div x y) = "(" ++ show x ++ " / " ++ show y ++ ")"
   show (Abs x) = "abs(" ++ show x ++ ")"
+
+(Abs ty, Neg ty, Integral ty, Eq ty) => Eq (Expr ty) where
+  (==) (Val x) (Val y) = x == y
+  (==) x y = (eval x) == (eval y)
+
+(Abs num, Neg num, Integral num, Cast num ty) => Cast (Expr num) ty where
+  cast numExpr = cast (eval numExpr)
