@@ -1,0 +1,15 @@
+* Equality: expression relationships between data
+  - Use types to express properties of data and the relationships between data.
+  - Using types to express guarantees that values are equal.
+  - Using types to express guarantees that values are not equal.
+** Guaranteeing equivalence of data with equality types
+   #+BEGIN_SRC idris
+   (==) : Eq ty => ty -> ty -> Bool
+   #+END_SRC
+   - The types don't tell you anything about the function. You have to
+     look at the implementation to figure out what the function does.
+   - If you want to compare values at the type level, you need more
+     expressive types.
+     - Type should guarantee that a comparison between two inputs can
+       only be successful only if the inputs really are identical.
+   - 
