@@ -7,3 +7,6 @@
    - [[file:chapter3/README.org][Chapter 3]]
    - [[file:chapter4/README.org][Chapter 4]]
    - [[file:chapter5/README.org][Chapter 5]]
+   - [[file:chapter6/README.org][Chapter 6]]
+   - [[file:chapter7/README.org][Chapter 7]]
+   - [[file:chapter8/README.org][Chapter 8]]

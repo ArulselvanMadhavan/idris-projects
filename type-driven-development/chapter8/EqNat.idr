@@ -1,5 +1,7 @@
 module EqNat
 
+import Data.Vect
+
 data EqNat : (num1 : Nat) -> (nunm2 : Nat) -> Type where
   Same : (num : Nat) -> EqNat num num
 
@@ -28,3 +30,9 @@ checkEqNat'' Z (S k) = Nothing
 checkEqNat'' (S k) Z = Nothing
 checkEqNat'' (S k) (S j) = do (Same eq) <- checkEqNat'' k j
                               pure (Same (S eq))
+
+
+exactLength : (len : Nat) -> (input : Vect m a) -> Maybe (Vect len a)
+exactLength {m} len input = case checkEqNat'' m len of
+                                 Nothing  => Nothing
+                                 (Just (Same len)) => Just input

@@ -12,4 +12,13 @@
      expressive types.
      - Type should guarantee that a comparison between two inputs can
        only be successful only if the inputs really are identical.
-   - 
+** Equality in general: the = type
+   #+BEGIN_SRC idris
+   data (=) : a -> b -> Type where
+        Refl : x = x
+   #+END_SRC
+   - ~Refl~ short for Reflexive
+   - Congruence
+     #+BEGIN_SRC idris
+     cong : (func: a -> b) (a = b) -> f a = f b
+     #+END_SRC
