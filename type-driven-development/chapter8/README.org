@@ -22,3 +22,13 @@
      #+BEGIN_SRC idris
      cong : (func: a -> b) (a = b) -> f a = f b
      #+END_SRC
+** Type Checking equality proofs
+   - An important step in type checking is unification.
+   - Unification attempts to resolve implicit arguments like ~x~ in ~Refl~
+   - Unifying two terms involves reducing both to normal form then
+     trying to find an assignment to implicit arguments which will
+     make those normal forms equal.
+     #+BEGIN_SRC idris
+     twoplustwo_eq_four : 2 + 2 = 4
+     twoplustwo_eq_four = Refl
+     #+END_SRC
