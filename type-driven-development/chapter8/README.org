@@ -37,5 +37,5 @@
      - It looks at the expected type of the expression.
      - It looks at the type of the given expression.
      - Evaluates both
-     - Check if they match after evaluating the expressions.
-   - 
+     - *Check if they match after evaluating the expressions.*
+** 
