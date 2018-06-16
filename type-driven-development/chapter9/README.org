@@ -12,4 +12,24 @@
          Here : Elem x (x :: xs)
          There : (later : Elem x xs) -> Elem x (y :: xs)
     #+END_SRC
+    - If a type has no values, like ~2 + 2 = 5~, you can provide an
+      implementation of the /Uninhabited/ interface.
+      #+BEGIN_SRC idris
+      interface Uninhabited t where
+        uninhabited : t -> Void
+      #+END_SRC
+    - ~absurd~ is a method in ~Prelude~ that acts like a helper to
+      ~uninhabited~
+      #+BEGIN_SRC idris
+      absurd : Uninhabited t => (h : t) -> a
+      absurd h = void (uninhabited h)
+      #+END_SRC
+*** auto-implicit arguments: automatically constructing proofs
+    - Idris uses the same expressin logic to fill ~auto~ implicit arguments.
+*** Decidable predicates: deciding membership of a vector
+    - ~Elem value xs~ is a decidable property for specific values of
+      ~value~ and ~xs~. So, Elem is a decidable predicate.
+      #+BEGIN_SRC idris
+      isElem : DecEq ty => (value : ty) -> (xs : Vect n ty) -> Dec (Elem value xs)
+      #+END_SRC
     - 
