@@ -1,0 +1,15 @@
+* Predicates: Expressing Assumptions and contracts in types
+  - /Predicates/ are data types used entirely for describing
+   relationships between data (i.e) property of data.
+  - By expressing relationships between data in types, you can be
+    explicit about the assumptions you're making about the inputs to a function.
+  - These are called /compile time contracts/
+** Membership tests: Elem predicate
+   - ~=~, ~Void~, ~Dec~ - typically used for building properties of data.
+*** Removing an element from a Vect
+    #+BEGIN_SRC idris
+    data Elem : a -> Vect k a -> Type where
+         Here : Elem x (x :: xs)
+         There : (later : Elem x xs) -> Elem x (y :: xs)
+    #+END_SRC
+    - 
