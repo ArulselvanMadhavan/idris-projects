@@ -32,4 +32,19 @@
       #+BEGIN_SRC idris
       isElem : DecEq ty => (value : ty) -> (xs : Vect n ty) -> Dec (Elem value xs)
       #+END_SRC
-    - 
+*** Expressing program state in types: a guessing game
+    - The need for predicates like ~Elem~, ~removeElem~ arises
+      naturally when we write functions that express characteristics
+      of system state, such as vector length, in their types.
+*** Summary
+    - Write types to express assumptions about how values relate.
+    - ~Elem~ dependent type is a predicate that expresses that a value
+      must be contained in a vector.
+    - Passing predicate as argument to a function expresses a contract
+      that the inputs to the function must follow.
+    - Write functions to show that a predicate is decidable - ~Dec~
+    - Idris will attempt to find values for arguments marked as ~auto~
+    - Capture properties of a system's state (such as rules of a game)
+      in a type.
+    - Predicates describe the validity of user input and ensure that
+      the user input is validated when necessary.

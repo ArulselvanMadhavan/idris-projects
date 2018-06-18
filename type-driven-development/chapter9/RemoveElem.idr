@@ -2,6 +2,7 @@ module RemoveElem
 
 import Data.Vect
 
+export
 removeElem : (value : a) -> (xs : Vect (S n) a) -> (prf : Elem value xs) -> Vect n a
 removeElem value (value :: ys) Here = ys
 removeElem {n = Z} value (y :: []) (There later) = absurd later
