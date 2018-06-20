@@ -17,3 +17,9 @@ groupByN : (n : Nat) -> (xs : List a) -> List (List a)
 groupByN n xs with (takeN n xs)
   groupByN n xs | Fewer = [xs]
   groupByN n (n_xs ++ rest) | (Exact n_xs) = n_xs :: groupByN n rest
+
+||| Halves
+halves : List a -> (List a, List a)
+halves xs with (takeN ((length xs) `div` 2) xs)
+  halves xs | Fewer = ([], xs)
+  halves (n_xs ++ rest) | (Exact n_xs) = (n_xs, rest)
