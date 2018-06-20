@@ -12,4 +12,39 @@
          Here : Elem x (x :: xs)
          There : (later : Elem x xs) -> Elem x (y :: xs)
     #+END_SRC
-    - 
+    - If a type has no values, like ~2 + 2 = 5~, you can provide an
+      implementation of the /Uninhabited/ interface.
+      #+BEGIN_SRC idris
+      interface Uninhabited t where
+        uninhabited : t -> Void
+      #+END_SRC
+    - ~absurd~ is a method in ~Prelude~ that acts like a helper to
+      ~uninhabited~
+      #+BEGIN_SRC idris
+      absurd : Uninhabited t => (h : t) -> a
+      absurd h = void (uninhabited h)
+      #+END_SRC
+*** auto-implicit arguments: automatically constructing proofs
+    - Idris uses the same expressin logic to fill ~auto~ implicit arguments.
+*** Decidable predicates: deciding membership of a vector
+    - ~Elem value xs~ is a decidable property for specific values of
+      ~value~ and ~xs~. So, Elem is a decidable predicate.
+      #+BEGIN_SRC idris
+      isElem : DecEq ty => (value : ty) -> (xs : Vect n ty) -> Dec (Elem value xs)
+      #+END_SRC
+*** Expressing program state in types: a guessing game
+    - The need for predicates like ~Elem~, ~removeElem~ arises
+      naturally when we write functions that express characteristics
+      of system state, such as vector length, in their types.
+*** Summary
+    - Write types to express assumptions about how values relate.
+    - ~Elem~ dependent type is a predicate that expresses that a value
+      must be contained in a vector.
+    - Passing predicate as argument to a function expresses a contract
+      that the inputs to the function must follow.
+    - Write functions to show that a predicate is decidable - ~Dec~
+    - Idris will attempt to find values for arguments marked as ~auto~
+    - Capture properties of a system's state (such as rules of a game)
+      in a type.
+    - Predicates describe the validity of user input and ensure that
+      the user input is validated when necessary.
