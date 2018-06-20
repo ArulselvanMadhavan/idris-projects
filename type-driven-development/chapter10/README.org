@@ -1,0 +1,43 @@
+* Views - Extending Pattern Matching
+  - Extend the forms of patterns you can use by defining informative data types called ~Views~.
+  - Views are dependent types parameterized by the data you'd like to match.
+  - Views give you new ways for observing data.
+  - Examples:
+    - Pattern match against last element of a list rather than the first.
+    - Define alternative ways of traversing data structures, such as
+      traversing a list in reverse or by repeatedly splitting the list
+      into halves.
+    - Hide complex data representations behind an abstract interface
+      while still supporting pattern matching on that data.
+  - ~Covering Function~ of a view describes how to convert a value
+    into a view of that value.
+* /with/ blocks: Syntax for extended pattern matching
+  - Dependent pattern matching is common programming idiom in Idris.
+  - /with/ is a construct for expressing extended pattern matching
+    more concisely.
+* Difference between /with/ and /case/
+  - Both /with/ and /case/ allows pattern matching on intermediate results.
+  - /with/ introduces a new pattern to match on the left side of a
+    definition.
+  - As a result, you can use pattern matching directly.
+  - /with/ is used to dictate the form the input must take.
+  - /with/ can produce inputs patters only if the expression passed to
+    it meets the following conditions.
+    - The pattern(view) passed to /with/ consists of a data constructor
+      applied to some arguments of the input.
+    - The argument(to view) must also be valid pattern.
+    - The value of the input pattern is forced by some other valid
+      /view/ pattern
+* Totality Checking
+  - How it works?
+    - There must be patterns for all possible well-typed inputs.
+    - When there is a recursive call, there must be a decreasing
+      argument that converges towards a base case.
+  - How it determines which arguments are decreasing?
+    - Looks at the patterns for the inputs in a definition.
+    - If a pattern is in the form of a data constructor, Idris
+      considers the arguments in that pattern to be smaller than the input.
+    - Pattern matching on views like ~xs ++ [x]~ doesn't use data
+      constructors, so Idris can't determine whether the inputs
+      decrease in each recursive call.
+    - /Recursive views/ can help avoid this problem
