@@ -51,4 +51,10 @@
     - Views can lead to inefficient computation like reverse a list
 * Nested With Blocks
   - For matching several inputs at once.
-  - 
+* More traversals: Data.List.Views
+* Lazy generic type
+  #+BEGIN_SRC idris
+  Delay a -> Lazy a
+  Force : Lazy a -> a
+  #+END_SRC
+  - Idris inserts applications of ~Delay~ and ~Force~ implicitly, as required.

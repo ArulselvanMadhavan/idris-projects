@@ -1,6 +1,7 @@
 module SuffixCheck
 import SnocList
 
+||| Checks if the first list is the suffix of the second list.
 isSuffix : Eq a => List a -> List a -> Bool
 isSuffix xs ys with (snocList xs)
   isSuffix [] ys | Empty = True
