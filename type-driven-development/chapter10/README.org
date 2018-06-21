@@ -41,3 +41,12 @@
       constructors, so Idris can't determine whether the inputs
       decrease in each recursive call.
     - /Recursive views/ can help avoid this problem
+* Recursive views: termination and efficiency
+  - A function with a view needs 3 components
+    - Original input data
+    - /view/ of the input data
+    - /coveringFunction/
+  - Why Recursive views?
+    - Views result in functions that are not ~total~
+    - Views can lead to inefficient computation like reverse a list
+  - 
