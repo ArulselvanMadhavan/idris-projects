@@ -49,4 +49,6 @@
   - Why Recursive views?
     - Views result in functions that are not ~total~
     - Views can lead to inefficient computation like reverse a list
+* Nested With Blocks
+  - For matching several inputs at once.
   - 
