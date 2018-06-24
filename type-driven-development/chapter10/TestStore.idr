@@ -20,3 +20,13 @@ filterKeys test input with (storeView input)
   filterKeys test (addToStore (key, value) store) | (SAdd rec) = if test value
                                                           then key :: (filterKeys test store | rec)
                                                           else filterKeys test store | rec
+
+testStore' : DataStore (SString .+. SInt)
+testStore' = addToStore ("First", 1) $
+             addToStore ("Second", 2) $
+             empty
+
+getValues : DataStore (SString .+. val_schema) -> List (SchemaType val_schema)
+getValues store with (storeView store)
+  getValues store | SNil = []
+  getValues (addToStore (_, v) oldStore) | (SAdd rec) = v :: (getValues oldStore)
