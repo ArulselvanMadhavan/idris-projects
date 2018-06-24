@@ -2,11 +2,12 @@ module Ex10_2_3
 
 import Data.Nat.Views
 
-toBinary' : (k : Nat) -> List Char
-toBinary' k with (halfRec k)
-  toBinary' Z | HalfRecZ = ['4']
-  toBinary' (n + n) | (HalfRecEven evenRec) = (::) '0' (toBinary' n | evenRec)
-  toBinary' (S (n + n)) | (HalfRecOdd oddRec) = (::) '1' (toBinary' n | oddRec)
+toBinaryHelper : (k : Nat) -> List Char
+toBinaryHelper k with (halfRec k)
+  toBinaryHelper Z | HalfRecZ = []
+  toBinaryHelper (n + n) | (HalfRecEven evenRec) = (::) '0' (toBinaryHelper n | evenRec)
+  toBinaryHelper (S (n + n)) | (HalfRecOdd oddRec) = (::) '1' (toBinaryHelper n | oddRec)
 
--- main : IO (List Char)
--- main = do pure (toBinary' 42)
+||| Returns the binary representation of a Nat
+toBinary' : (k : Nat) -> List Char
+toBinary' k = reverse (toBinaryHelper k)
