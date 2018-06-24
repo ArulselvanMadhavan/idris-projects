@@ -58,3 +58,19 @@
   Force : Lazy a -> a
   #+END_SRC
   - Idris inserts applications of ~Delay~ and ~Force~ implicitly, as required.
+* Data Abstraction: Hiding the structure using views
+  - /Views/ allow you to look at how a value is constructed in different ways.
+  - /Views/ kind of obviate the need to look at the actual data constructors of that value.
+  - So, /Views/ can be used to hide the representation of data in a
+    module.
+* Export modifiers
+  - /private/ - The name is not exported at all
+  - /export/ - Name and type are exported but not the definition. When
+    used on data types, type constructors is exported but the data
+    constructors are private
+  - /public export/ - Name, type and definition are exported. For data
+    types, this means the data constructors are exported. For
+    functions, this means the functions' definitions are exported.
+  - Exporting a function definition as well as its type is important
+    if you want to use a function definition in type. For ex: type
+    synonyms and type-level functions
