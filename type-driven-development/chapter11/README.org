@@ -1,0 +1,45 @@
+* Streams and processes: Working with Infinite data
+  - Types can be used to distinguish between those expressions for
+    which evaluations is guaranteed to terminate and those expressions
+    for which evaluation is guaranteed to keep producing new values,
+    marking arguments to a data structure as potentially infinite.
+** Inf datatype
+   - Example: Infinite list
+     #+BEGIN_SRC idris
+     data InfList : Type -> Type where
+          (::) : (value : elem) -> Inf (InfList elem) -> InfList elem
+     #+END_SRC
+   - There's no /Nil/ constructor. So, no way to end a list.
+   - The recursive argument is wrapped in a new data type, /Inf/, that
+     marks the argument as potentially infinite.
+   - /Inf/ abstract data type
+     #+BEGIN_SRC idris
+     Inf : Type -> Type
+     
+     Delay : (value : ty) -> Inf ty
+     Force : (computation : Inf ty) -> ty
+     #+END_SRC
+   - data vs codata
+     - data is finite and is intended to be consumed.
+
+     - codata is potentially infinite and is intended to be produced.
+
+   - recursive vs corecursive.
+
+     - Recusion operates by taking data and breaking it down toward a
+       base case.
+
+     - Corecursion operates by starting at a base case and building up codata.
+** What does it mean for a function to be total?
+   - If a function is total, it will never crash due to a missing
+     case, and it will always return a well typed result within a
+     finite time.
+   - Functions that produce infinite data can be used as components of
+     terminating functions, provided that they produce a new piece of
+     data on request.
+   - Idris considers a function to be total when
+     - there's a recursive call and there's a decreasing argument that
+       converges to a base case.
+     - there's a recursive argument to /Delay/, The delayed call will
+       *always* be an argument to a data constructor after evaluation
+       for all inputs.
