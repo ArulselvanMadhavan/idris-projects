@@ -51,3 +51,10 @@
    take   : (n : Nat) -> (xs : Stream elem) -> List elem
    iterate: (f : elem -> elem) -> (x : elem) -> Stream elem
    #+END_SRC
+*** Aside: Divides view
+    #+BEGIN_SRC idris
+    data Divides : Int -> (d : Int)-> Type where
+         DivByZero : Int.Divides x 0
+         DivBy     : (prf : rem >= 0 && rem < d = True) -> Int.Divides ((d * div) + rem) d
+    divides : (val : Int) -> (d : Int) -> Divides val d
+    #+END_SRC
