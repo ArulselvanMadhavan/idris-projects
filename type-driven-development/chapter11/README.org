@@ -43,3 +43,11 @@
      - there's a recursive argument to /Delay/, The delayed call will
        *always* be an argument to a data constructor after evaluation
        for all inputs.
+** Stream data type
+   #+BEGIN_SRC idris
+   data Stream : Type -> Type where
+        (::) : (value : elem) -> Inf (Stream elem) -> Stream elem
+   repeat : elem -> Stream elem
+   take   : (n : Nat) -> (xs : Stream elem) -> List elem
+   iterate: (f : elem -> elem) -> (x : elem) -> Stream elem
+   #+END_SRC
