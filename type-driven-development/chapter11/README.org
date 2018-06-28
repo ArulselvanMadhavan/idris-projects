@@ -58,3 +58,61 @@
          DivBy     : (prf : rem >= 0 && rem < d = True) -> Int.Divides ((d * div) + rem) d
     divides : (val : Int) -> (d : Int) -> Divides val d
     #+END_SRC
+** Interactive total programs
+   - Interactive programs can be thought of as a program that produces
+     a potentially infinite sequence of interactive actions.
+   - Non terminating but productive(and total) interactive programs
+     using ~InfIO~
+     - ~InfIO~ describes infinite sequence of actions.
+     - Non terminating yet productive functions using ~InfIO~
+     - ~run~ function that converts ~InfIO~ actions to IO actions.
+*** Describing Infinite processes
+    #+BEGIN_SRC idris
+    data InfIO : Type where
+         Do : IO a -> (a -> Inf InfIO) -> InfIO
+    #+END_SRC
+    - Idris runtime system can execute actions of type IO.
+    - We need a function to convert InfIO to IO so that Idris runtime
+      system can execute them.
+      #+BEGIN_SRC idris
+      run : InfIO -> IO ()
+      run (Do action cont) = do res <- action
+                             run (cont res)
+      #+END_SRC
+*** Generating Infinite structures using Lazy types
+    - The purpose of /Lazy/ is to control when Idris evaluates an expression.
+    - Idris won't evaluate an expression of type ~Lazy ty~ until it's
+      explicitly requested by ~Force~
+      #+BEGIN_SRC idris
+      Lazy : Type -> Type
+
+      Delay : (value : ty) -> Lazy ty
+      Force : (computation : Lazy ty) -> ty
+      #+END_SRC
+    - Idris inserts calls to Delay and Force implicitly
+    - ~Inf~ and ~Lazy~ are implemented using the same type internally.
+    - The only difference between them is the way totality checker
+      treats them.
+      #+BEGIN_SRC idris
+      data DelayReason = Infinite | LazyValue
+      
+      data Delayed : DelayReason -> Type -> Type where
+           Delay   : (val : ty)  -> Delayed reason ty
+      
+      ||| Type Synonym
+      Inf : Type -> Type
+      Inf ty = Delayed Infinite ty
+
+      ||| Type Synonym
+      Lazy : Type -> Type
+      Lazy ty = Delayed LazyValue ty
+
+      Force : Delayed Reason ty -> ty
+      #+END_SRC
+    - Totality Checking
+      - If the argument had ~Lazy ty~, it's considered smaller than the
+        constructor expression.
+
+      - If the argument had ~Inf ty~, it's not considered smaller than
+        the constructor expression. Idris will check if the overall
+        expression is productive.
