@@ -5,21 +5,36 @@ import System
 import Ex11_2_1
 
 ||| Supported Input commands
+public export
 data Command : Type -> Type where
      PutStr  : String -> Command ()
      GetLine : Command String
+     Pure    : ty -> Command ty
+     Bind    : Command a -> (a -> Command b) -> Command b
 
 ||| ConsoleIO
+public export
 data ConsoleIO : Type -> Type where
      Quit : a -> ConsoleIO a
      Do   : Command a -> (a -> Inf (ConsoleIO b)) -> ConsoleIO b
 
-(>>=) : Command a -> (a -> Inf (ConsoleIO b)) -> ConsoleIO b
-(>>=) = Do
+
+namespace CommandDo
+  export
+  (>>=) : Command a -> (a -> Command b) -> Command b
+  (>>=) = Bind
+
+namespace ConsoleDo
+  export
+  (>>=) : Command a -> (a -> Inf (ConsoleIO b)) -> ConsoleIO b
+  (>>=) = Do
 
 runCommand : Command a -> IO a
 runCommand (PutStr x) = putStr x
 runCommand GetLine = getLine
+runCommand (Pure val) = pure val
+runCommand (Bind c f) = do res <- runCommand c
+                           runCommand (f res)
 
 run : Fuel -> ConsoleIO a -> IO (Maybe a)
 run Dry _ = pure Nothing
@@ -28,10 +43,11 @@ run (More fuel) (Do cmd f) = do x <- runCommand cmd
                                 run fuel (f x)
 
 mutual
+  export
   correct : Stream Int -> (Score : Nat) -> ConsoleIO Nat
   correct nums score = do PutStr "Correct\n"
                           quiz nums (score + 1)
-
+  export
   wrong : Stream Int -> Int -> (score : Nat) -> ConsoleIO Nat
   wrong nums ans score = do PutStr ("Wrong, the answer is " ++ show ans ++ "\n")
                             quiz nums score
