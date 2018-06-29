@@ -1,8 +1,10 @@
 module Ex11_2_1
 
+public export
 data InfIO : Type where
      Do : IO a -> (a -> Inf InfIO) -> InfIO
 
+export
 (>>=) : IO a -> (a -> Inf InfIO) -> InfIO
 (>>=) = Do
 

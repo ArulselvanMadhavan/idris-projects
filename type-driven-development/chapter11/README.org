@@ -116,3 +116,4 @@
       - If the argument had ~Inf ty~, it's not considered smaller than
         the constructor expression. Idris will check if the overall
         expression is productive.
+** Mixing Infinite and finite sequences
