@@ -6,20 +6,23 @@ import Arith
 
 %default total
 
+public export
 data InfIO : Type where
      Do : IO a -> (a -> Inf InfIO) -> InfIO
 
 (>>=) : IO a -> (a -> Inf InfIO) -> InfIO
 (>>=) = Do
 
+public export
 data Fuel = Dry | More Fuel
 
+export
 run : Fuel -> InfIO -> IO ()
 run Dry _ = putStrLn "Out of fuel"
 run (More x) (Do y f) = do c <- y
                            run x (f c)
 
-partial
+export partial
 forever : Fuel
 forever = More forever
 

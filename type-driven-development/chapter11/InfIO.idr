@@ -1,11 +1,14 @@
 module InfIO
 
+public export
 data InfIO : Type where
      Do : IO a -> (a -> Inf InfIO) -> InfIO
 
+export
 (>>=) : IO a -> (a -> Inf InfIO) -> InfIO
 (>>=) = Do
 
+public export
 data Fuel = Dry | More Fuel
 
 data Fuel' = Dry' | More' (Lazy Fuel)
@@ -31,12 +34,12 @@ run (Do action f) = do res <- action
 
 |||First attempt to make run total with a finite
 |||sequence
-total
+export total
 run' : Fuel -> InfIO -> IO ()
 run' Dry (Do x f) = putStrLn "Out of Fuel"
 run' (More fuel) (Do x f) = do res <- x
                                run' fuel (f res)
-
+export
 forever : Fuel
 forever = More forever
 
