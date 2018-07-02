@@ -2,8 +2,10 @@ module ArithCmdDo
 
 import ArithCmd
 
+public export
 data Input = Answer Int | QuitCmd
 
+export
 readInput : (prompt : String) -> Command Input
 readInput prompt = do PutStr prompt
                       answer <- GetLine
@@ -11,6 +13,7 @@ readInput prompt = do PutStr prompt
                          then Pure QuitCmd
                          else Pure (Answer (cast answer))
 
+export
 quiz : Stream Int -> (score : Nat) -> ConsoleIO Nat
 quiz (num1 :: (num2 :: nums)) score =
   do PutStr ("Score so far: " ++ show score ++ "\n")
