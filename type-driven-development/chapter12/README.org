@@ -1,1 +1,27 @@
 * Writing programs with State
+  - ~State~ type can be used in functions that need to maintain a
+    local mutable state.
+  - Disadvantages with manually maintaining state
+    1. error-prone
+    2. hard to read
+  - State from ~Control.Monad.State~
+    #+BEGIN_SRC idris
+    ||| State represented using stateType and Result type using ty.
+    State : (stateType : Type) -> (ty : Type) -> Type
+    ||| Runs a sequence of stateful operations, producing a pair of result and final state.
+    runState : State stateType a -> stateType -> (a, stateType)
+
+    get : State stateType stateType
+
+    put : stateType -> State stateType ()
+
+    (>>=) : State stateType a -> (a -> State stateType b) -> State stateType b
+    #+END_SRC
+  - Variants of ~runState~
+    #+BEGIN_SRC idris
+    |||Runs a sequence of operations and returns only the result
+    evalState : State stateType a -> stateType -> a
+    |||Runs a sequence of operations and returns only the final state
+    execState : State stateType a -> stateType -> stateType
+    #+END_SRC
+  - 
