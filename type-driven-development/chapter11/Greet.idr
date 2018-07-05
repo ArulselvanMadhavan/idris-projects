@@ -3,6 +3,7 @@ module Greet
 import Ex11_2_1
 import RunIO
 
+total
 greet : InfIO
 greet = do putStr "Enter your name: "
            name <- getLine
@@ -18,7 +19,7 @@ greet' = do putStr "Enter your name: "
                        Quit ()
                else do putStrLn ("Hello " ++ name)
                        greet'
-
+total
 run : Fuel -> RunIO a -> IO (Maybe a)
 run Dry _ = pure Nothing
 run (More _) (Quit x) = pure (Just x)
