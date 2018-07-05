@@ -11,3 +11,5 @@
    - [[file:chapter7/README.org][Chapter 7]]
    - [[file:chapter8/README.org][Chapter 8]]
    - [[file:chapter9/README.org][Chapter 9]]
+   - [[file:chapter10/README.org][Chapter 10]]
+   - [[file:chapter11/README.org][Chapter 11]]
