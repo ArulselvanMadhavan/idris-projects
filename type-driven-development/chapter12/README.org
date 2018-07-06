@@ -24,4 +24,12 @@
     |||Runs a sequence of operations and returns only the final state
     execState : State stateType a -> stateType -> stateType
     #+END_SRC
-  - 
+** Why implement Monad?
+   - Monad needs Functor and Applicative
+   - It gives you access to generic functions defined in the library
+   - ~when~ - evaluates a computation when a condition is true
+   - ~traverse~ applies a computation across a structure
+** Effects library
+   - /Effects/ supports combining different kinds of side effects like
+     /State/ and /IO/ in types, as well as other effects such as
+     exceptions and nondeterminism.

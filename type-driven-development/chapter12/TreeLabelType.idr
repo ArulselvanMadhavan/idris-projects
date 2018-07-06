@@ -3,6 +3,7 @@ module TreeLabelType
 import TreeLabel
 
 ||| Custom State Type
+public export
 data State : (stateType : Type) -> Type -> Type where
      Get : State stateType stateType
      Put : stateType -> State stateType ()
@@ -15,6 +16,7 @@ get = Get
 (>>=) : State stateType a -> (a -> State stateType b) -> State stateType b
 (>>=) = Bind
 
+export
 runState : State stateType a -> (st : stateType) -> (a, stateType)
 runState Get st = (st, st)
 runState (Put x) st = ((), x)
