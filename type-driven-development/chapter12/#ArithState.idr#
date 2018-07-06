@@ -10,18 +10,13 @@ record Score where
        constructor MkScore
        correct : Nat
        attempted : Nat
-
+       
 record GameState where
        constructor MkGameState
        score : Score
        difficulty : Int
-
-Show GameState where
-     show st = show (correct (score st)) ++ "/" ++
-               show (attempted (score st)) ++ "\n" ++
-               "Difficulty: " ++ show (difficulty st)
-
-initState : GameState              
+       
+initState : GameState
 initState = MkGameState (MkScore 0 0) 12
 
 ||| Supported Input commands
