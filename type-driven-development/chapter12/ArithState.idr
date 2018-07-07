@@ -87,17 +87,19 @@ addCorrect = record { score->correct $= (+1),
 addWrong : GameState -> GameState
 addWrong = record { score->attempted $= (+1) }
 
+updateGameState : (GameState -> GameState) -> Command ()
+updateGameState f = do current <- GetGameState
+                       PutGameState (f current)
+
 mutual
   correct : ConsoleIO GameState
   correct = do PutStr "Correct\n"
-               st <- GetGameState
-               PutGameState (addCorrect st)
+               updateGameState addCorrect
                quiz
   
   wrong : Int -> ConsoleIO GameState
   wrong ans = do PutStr ("Wrong, the answer is " ++ show ans ++ "\n")
-                 st <- GetGameState
-                 PutGameState (addWrong st)
+                 updateGameState addWrong
                  quiz
   
   quiz : ConsoleIO GameState
@@ -112,8 +114,8 @@ mutual
                                      else wrong (num1 * num2)
                  QuitCmd => Quit st
 
--- partial
--- main : IO ()
--- main = do seed <- time
---           Just score <- run forever (quiz (arithInputs (fromInteger seed)) 0) | Nothing => putStrLn "Ran out of fuel"
---           putStrLn ("Final score: " ++ show score)
+partial
+main : IO ()
+main = do seed <- time
+          (Just score, _, state) <- run forever (randoms (fromInteger seed)) initState quiz | _ => putStrLn "Ran out of fuel"
+          putStrLn ("Final score: " ++ show score)
