@@ -35,6 +35,18 @@ data Command : Type -> Type where
      Pure    : ty -> Command ty
      Bind    : Command a -> (a -> Command b) -> Command b
 
+Functor Command where
+  map f c = Bind c (\a => Pure (f a))
+  
+Applicative Command where
+  pure a = Pure a
+  (<*>) f c = Bind f (\f' =>
+              Bind c (\c' =>
+              Pure (f' c')))
+              
+Monad Command where
+  (>>=) = Bind
+
 ||| ConsoleIO
 data ConsoleIO : Type -> Type where
      Quit : a -> ConsoleIO a
