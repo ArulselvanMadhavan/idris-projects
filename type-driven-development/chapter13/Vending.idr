@@ -31,8 +31,17 @@ mutual
                                         Display "Enjoy!"
                                         machineLoop
 
+  vend {pounds = Z} = do Display "Insert a coin"
+                         machineLoop
+
+  vend {chocs = Z} = do Display "Out of Stock"
+                        machineLoop
+
   refill : (num : Nat) -> MachineIO (pounds, chocs)
-  refill num = ?refill_rhs
+  refill {pounds = Z} num = do Refill num
+                               machineLoop
+  refill _ = do Display "Can't refill: Coins in machine"
+                machineLoop
 
   machineLoop : MachineIO (pounds, chocs)
   machineLoop = do Just x <- GetInput | Nothing => do Display "Invalid input"
