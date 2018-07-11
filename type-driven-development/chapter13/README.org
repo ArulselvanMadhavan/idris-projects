@@ -1,1 +1,3 @@
 * State Machines: Verifying protocols in types
+  - Storing the abstract information in types is useful when you have
+    concrete data that relates to that abstract data
