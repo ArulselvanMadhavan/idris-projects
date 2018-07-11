@@ -67,17 +67,24 @@ mutual
   readInput _ = Nothing
 
   runCommand : MachineCmd a state1 state2 -> IO a
-  runCommand GetInput = do x <- getLine
-                           pure (readInput x)
+  runCommand InsertCoin = putStrLn "Coin Inserted"
+  runCommand Vend = putStrLn "Chocolate vended"
+  runCommand {state1 = (p, _)} GetCoins = putStrLn ("Dispensing coins: " ++ (show p))
+  runCommand {state1 = (Z, chocs)} (Refill bars) = putStrLn ("Refill: " ++ show (plus bars chocs))
+  runCommand (Display x) = putStrLn x
+  runCommand {state1 = (p, c)} GetInput = do x <- getLine
+                                             putStrLn ("Coins: " ++ show p ++ "\n"
+                                                       ++ "Chocs: " ++ show c)
+                                             putStr "> "
+                                             pure (readInput x)
   runCommand (Pure x) = do pure x
   runCommand (x >>= f) = do res <- runCommand x
                             runCommand (f res)
 
-  run : (fuel : Fuel) -> MachineIO (pounds, chocs) -> IO VendState
-  run {pounds = pounds} {chocs = chocs} Empty (Do x f) = do pure (pounds, chocs)
+  run : (fuel : Fuel) -> MachineIO state -> IO ()
+  run Empty (Do x f) = do pure ()
   run (More y) (Do x f) = do res <- runCommand x
-                             run y ?finalParam
+                             run y (f res)
 
   main : IO ()
-  main = do (_, result) <- run forever machineLoop {pounds = Z} {chocs = Z}
-            putStrLn (show result)
+  main = run forever (machineLoop {pounds = Z} {chocs = Z})
