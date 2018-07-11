@@ -8,7 +8,12 @@ data Input = COIN
            | CHANGE
            | REFILL Nat
 
-data MachineCmd : Type -> VendState -> VendState -> Type where
+data Fuel = Empty | More (Inf Fuel)
+
+forever : Fuel
+forever = More forever
+
+data MachineCmd : Type -> (current: VendState) -> (next : VendState) -> Type where
      InsertCoin : MachineCmd () (pounds, chocs) (S pounds, chocs)
      Vend : MachineCmd () (pounds, S chocs) (pounds, chocs)
      GetCoins : MachineCmd () (pounds, chocs) (Z, chocs)
@@ -53,3 +58,26 @@ mutual
                         CHANGE => do GetCoins
                                      machineLoop
                         (REFILL k) => refill k
+
+  readInput : String -> Maybe Input
+  readInput "coin" = Just COIN
+  readInput "vend" = Just VEND
+  readInput "refill" = Just (REFILL 10) -- TODO remove 10
+  readInput "change" = Just CHANGE
+  readInput _ = Nothing
+
+  runCommand : MachineCmd a state1 state2 -> IO a
+  runCommand GetInput = do x <- getLine
+                           pure (readInput x)
+  runCommand (Pure x) = do pure x
+  runCommand (x >>= f) = do res <- runCommand x
+                            runCommand (f res)
+
+  run : (fuel : Fuel) -> MachineIO (pounds, chocs) -> IO VendState
+  run {pounds = pounds} {chocs = chocs} Empty (Do x f) = do pure (pounds, chocs)
+  run (More y) (Do x f) = do res <- runCommand x
+                             run y ?finalParam
+
+  main : IO ()
+  main = do (_, result) <- run forever machineLoop {pounds = Z} {chocs = Z}
+            putStrLn (show result)
