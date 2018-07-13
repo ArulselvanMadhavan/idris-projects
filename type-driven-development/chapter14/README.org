@@ -1,0 +1,12 @@
+* Dependent State Machines: handling feedback and errors
+  - By defining valid state transitions in the type, you can be sure
+    that a program that typechecks is guaranteed to describe a valid
+    sequence of state transitions.
+  - State transitions can also fail.
+  - How to encode this in types?
+    - Allow the state transition to depend on the result of an
+      /operation/
+      #+BEGIN_SRC idris
+      -- ty is the result of the operation that could fail.
+      data SomeCmd : (ty : Type) -> InputState -> (ty -> OutputState)
+      #+END_SRC
