@@ -13,3 +13,8 @@
    - [[file:chapter9/README.org][Chapter 9]]
    - [[file:chapter10/README.org][Chapter 10]]
    - [[file:chapter11/README.org][Chapter 11]]
+   - [[file:chapter12/README.org][Chapter 12]]
+   - [[file:chapter13/README.org][Chapter 13]]
+** TODO
+   - Chapter 13 Stack.idr, for some reason, finishes immediately as
+     soon as it starts.

@@ -1,3 +1,11 @@
 * State Machines: Verifying protocols in types
   - Storing the abstract information in types is useful when you have
-    concrete data that relates to that abstract data
+    concrete data that relates to that abstract data.
+  - Data types can model state machines by using each data constructor
+    to describe a state transition.
+  - Describe how a Command changes the state of a system by giving the
+    input and output states of the system as part of the command's type.
+  - Types can model infinite state spaces as well as finite states.
+  - Sequences of commands give verified sequences of state transitions
+  - Represent mutable dependent typed state by putting arguments to
+    dependent type in state transitions
