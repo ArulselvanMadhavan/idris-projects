@@ -10,3 +10,4 @@
       -- ty is the result of the operation that could fail.
       data SomeCmd : (ty : Type) -> InputState -> (ty -> OutputState)
       #+END_SRC
+    - 
